@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{product.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{product.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/products/add}" th:text="#{product.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${products.empty}" th:text="#{product.list.empty}" />
+            <div th:if="${!products.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{product.id.label}" scope="col" />
+                            <th th:text="#{product.name.label}" scope="col" />
+                            <th th:text="#{product.description.label}" scope="col" />
+                            <th th:text="#{product.imgUrl.label}" scope="col" />
+                            <th th:text="#{product.price.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="product : ${products}">
+                            <td th:text="${product.id}" />
+                            <td th:text="${product.name}" />
+                            <td th:text="${product.description}" />
+                            <td th:text="${product.imgUrl}" />
+                            <td th:text="${product.price}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/products/edit/{id}(id=${product.id})}" th:text="#{product.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/products/delete/{id}(id=${product.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{product.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
